@@ -19,7 +19,7 @@ function App() {
     <div className="App">
       {authIsReady && (
         <BrowserRouter>
-          <Sidebar />
+          {user && <Sidebar />}
           <div className="container">
             <Navbar />
             {/* Switch surrounds the Rutes so only one Route component can be show at a time */}
