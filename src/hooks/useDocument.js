@@ -5,7 +5,7 @@ export const useDocument = (collection, id) => {
   const [document, setDocument] = useState(null);
   const [error, setError] = useState(null);
 
-  // realtime data for document
+  // realtime data for document - collection is exp. "project"
   useEffect(() => {
     const ref = projectFirestore.collection(collection).doc(id);
 
