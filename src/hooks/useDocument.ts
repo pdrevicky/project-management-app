@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { projectFirestore } from "../firebase/config";
+import { Project } from "../types/types";
 
-export const useDocument = (collection, id) => {
-  const [document, setDocument] = useState(null);
-  const [error, setError] = useState(null);
+export const useDocument = (collection: string, id: string) => {
+  const [document, setDocument] = useState<Project>();
+  const [error, setError] = useState("");
 
   // realtime data for document - collection is exp. "project"
   useEffect(() => {
@@ -13,7 +14,7 @@ export const useDocument = (collection, id) => {
       (snapshot) => {
         if (snapshot.data()) {
           setDocument({ ...snapshot.data(), id: snapshot.id });
-          setError(null);
+          setError("");
         } else {
           setError("No such document exists");
         }

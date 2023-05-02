@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useDocument } from "../../hooks/useDocument";
+import React from "react";
 
 // styles
 import "./Project.css";
@@ -7,7 +8,7 @@ import ProjectSummary from "./ProjectSummary";
 import ProjectComments from "./ProjectComments";
 
 export default function Project() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const { document, error } = useDocument("projects", id);
 
   if (error) {

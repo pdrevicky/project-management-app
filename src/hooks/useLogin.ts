@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { projectAuth, projectFirestore } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
+import { AuthActionTypeEnum } from "../types/types";
 
 export const useLogin = () => {
   const [isCancelled, setIsCancelled] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [isPending, setIsPending] = useState(false);
   const { dispatch } = useAuthContext();
 
-  const login = async (email, password) => {
-    setError(null);
+  const login = async (email: string, password: string) => {
+    setError("");
     setIsPending(true);
 
     try {
@@ -19,17 +20,17 @@ export const useLogin = () => {
       // set user online status true
       await projectFirestore
         .collection("users")
-        .doc(res.user.uid)
+        .doc(res.user?.uid)
         .update({ online: true });
 
       // dispatch login action
-      dispatch({ type: "LOGIN", payload: res.user });
+      dispatch({ type: AuthActionTypeEnum.LOGIN, payload: res.user });
 
       if (!isCancelled) {
         setIsPending(false);
-        setError(null);
+        setError("");
       }
-    } catch (err) {
+    } catch (err: any) {
       if (!isCancelled) {
         setError(err.message);
         setIsPending(false);

@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import { projectAuth, projectFirestore } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
+import { AuthActionTypeEnum } from "../types/types";
 
 export const useLogout = () => {
   const [isCancelled, setIsCancelled] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [isPending, setIsPending] = useState(false);
   const { dispatch, user } = useAuthContext();
 
   const logout = async () => {
-    setError(null);
+    setError("");
     setIsPending(true);
 
     // sign the user out
     try {
       // update online status
-      const { uid } = user;
+      const { uid } = user!;
       await projectFirestore
         .collection("users")
         .doc(uid)
@@ -24,14 +25,14 @@ export const useLogout = () => {
       await projectAuth.signOut();
 
       // dispatch logout action
-      dispatch({ type: "LOGOUT" });
+      dispatch({ type: AuthActionTypeEnum.LOGOUT, payload: null });
 
       // update state
       if (!isCancelled) {
         setIsPending(false);
-        setError(null);
+        setError("");
       }
-    } catch (err) {
+    } catch (err: any) {
       if (!isCancelled) {
         setError(err.message);
         setIsPending(false);
