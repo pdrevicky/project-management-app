@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Select from "react-select";
+import Select, { MultiValue } from "react-select";
 import { useCollection } from "../../hooks/useCollection";
 import { timestamp } from "../../firebase/config";
 import { useAuthContext } from "../../hooks/useAuthContext";
@@ -8,8 +8,14 @@ import { useHistory } from "react-router-dom";
 
 // styles
 import "./Create.css";
+import { User } from "../../types/types";
 
-const categories = [
+type CategoryOption = {
+  value: string;
+  label: string;
+};
+
+const categories: CategoryOption[] = [
   { value: "development", label: "Development" },
   { value: "design", label: "Design" },
   { value: "sales", label: "Sales" },
@@ -18,8 +24,9 @@ const categories = [
 
 export default function Create() {
   const history = useHistory();
-  const { documents } = useCollection("users");
-  const [users, setUsers] = useState([]);
+  const collection: string = "users";
+  const { documents } = useCollection<User[]>({ collection });
+  const [users, setUsers] = useState<User[]>([]);
   const { user } = useAuthContext();
   // useFirestore(collection)
   const { addDocument, response } = useFirestore("projects");
@@ -29,6 +36,7 @@ export default function Create() {
       const options = documents.map((user) => {
         return { value: user, label: user.displayName };
       });
+      //@ts-ignore
       setUsers(options);
     }
   }, [documents]);
@@ -37,13 +45,17 @@ export default function Create() {
   const [name, setName] = useState("");
   const [details, setDetails] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [category, setCategory] = useState("");
-  const [assignedUsers, setAssignedUsers] = useState([]);
-  const [formError, setFormError] = useState(null);
+  const [category, setCategory] = useState<CategoryOption | null>();
+  const [assignedUsers, setAssignedUsers] = useState<MultiValue<User>>([]);
+  const [formError, setFormError] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleChange = (option: MultiValue<User>) => {
+    setAssignedUsers(option);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormError(null);
+    setFormError("");
 
     if (!category) {
       setFormError("Please select a project category");
@@ -54,16 +66,19 @@ export default function Create() {
       return;
     }
 
-    const createdBy = {
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      id: user.uid,
+    const createdBy: User = {
+      displayName: user?.displayName ?? "",
+      photoURL: user?.photoURL ?? "",
+      id: user?.uid ?? "",
     };
 
     const assignedUsersList = assignedUsers.map((u) => {
       return {
+        //@ts-ignore
         displayName: u.value.displayName,
+        //@ts-ignore
         photoURL: u.value.photoURL,
+        //@ts-ignore
         id: u.value.id,
       };
     });
@@ -127,7 +142,7 @@ export default function Create() {
           <Select
             options={users}
             // this does not have to be called option
-            onChange={(option) => setAssignedUsers(option)}
+            onChange={(option) => handleChange(option)}
             // this allow multiple-select on component
             isMulti
           />

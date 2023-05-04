@@ -5,18 +5,23 @@ import uuid from "react-uuid";
 import { useFirestore } from "../../hooks/useFirestore";
 import Avatar from "../../components/Avatar";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { Project } from "../../types/types";
 
-export default function ProjectComments({ project }) {
+interface Props {
+  project: Project;
+}
+
+export default function ProjectComments({ project }: Props) {
   const [newComment, setNewComment] = useState("");
   const { user } = useAuthContext();
   const { updateDocument, response } = useFirestore("projects");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const commentToAdd = {
-      displayName: user.displayName,
-      photoURL: user.photoURL,
+      displayName: user?.displayName,
+      photoURL: user?.photoURL,
       content: newComment,
       createdAt: timestamp.fromDate(new Date()),
       id: uuid(),
@@ -40,7 +45,7 @@ export default function ProjectComments({ project }) {
           project.comments.map((comment) => (
             <li key={comment.id}>
               <div className="comment-author">
-                <Avatar src={comment.photoURL} />
+                <Avatar src={comment.photoURL!} />
                 <p>{comment.displayName}</p>
               </div>
               <div className="comment-date">

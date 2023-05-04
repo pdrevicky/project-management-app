@@ -1,6 +1,5 @@
 import { useReducer, useEffect, useState, Reducer } from "react";
 import { projectFirestore, timestamp } from "../firebase/config";
-import { Project } from "../types/types";
 
 interface FirestoreStateProps {
   document: payloadType;
@@ -9,7 +8,7 @@ interface FirestoreStateProps {
   success: boolean;
 }
 
-type payloadType = Project | string | undefined;
+type payloadType = object | string | undefined;
 
 enum FirestoreReducerEnum {
   IS_PENDING = "IS_PENDING",
@@ -20,7 +19,17 @@ enum FirestoreReducerEnum {
 }
 
 let initialState: FirestoreStateProps = {
-  document: {},
+  document: {
+    assignedUsersList: [],
+    category: null,
+    comments: [],
+    createdAt: null,
+    createdBy: null,
+    details: "",
+    dueDate: null,
+    name: "",
+    id: "",
+  },
   isPending: false,
   error: "",
   success: false,

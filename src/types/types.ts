@@ -8,11 +8,12 @@ export enum AuthActionTypeEnum {
 
 export interface User {
   displayName?: string;
-  id?: string;
   photoURL?: string;
+  id?: string;
+  online?: boolean;
 }
 
-export interface comment extends User {
+export interface Comment extends User {
   content: string;
   createdAt: Timestamp;
 }
@@ -25,15 +26,15 @@ export enum projectCategories {
 }
 
 export interface Project {
-  assignedUserList?: User[];
-  category?: projectCategories;
-  comments?: comment[];
-  createdAt?: Timestamp;
-  createdBy?: User;
-  details?: string;
-  dueDate?: Timestamp;
-  name?: string;
-  id?: string;
+  assignedUsersList: User[];
+  category: projectCategories | null;
+  comments: Comment[];
+  createdAt: Timestamp | null;
+  createdBy: User | null;
+  details: string;
+  dueDate: Timestamp | null;
+  name: string;
+  id: string;
 }
 
 export type Collecions = User[] | Project[];

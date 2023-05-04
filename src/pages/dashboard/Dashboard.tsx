@@ -6,10 +6,12 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import "./Dashboard.css";
 import ProjectList from "../../components/ProjectList";
 import ProjectFilter from "./ProjectFilter";
+import { Project } from "../../types/types";
 
 export default function Dashboard() {
+  const collection: string = "projects";
   const { user } = useAuthContext();
-  const { documents, error } = useCollection("projects");
+  const { documents, error } = useCollection<Project[]>({ collection });
   const [currentFilter, setCurrentFilter] = useState("all");
 
   const projects = documents
@@ -19,8 +21,8 @@ export default function Dashboard() {
             return true;
           case "mine":
             let assignedToMe = false;
-            document.assignedUsersList.forEach((u) => {
-              if (user.uid === u.id) {
+            document.assignedUsersList?.forEach((u) => {
+              if (user?.uid === u.id) {
                 assignedToMe = true;
               }
             });
@@ -37,7 +39,7 @@ export default function Dashboard() {
       })
     : null;
 
-  const changeFilter = (newFilter) => {
+  const changeFilter = (newFilter: string) => {
     setCurrentFilter(newFilter);
   };
 

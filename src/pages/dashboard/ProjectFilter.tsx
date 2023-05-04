@@ -1,3 +1,5 @@
+import React from "react";
+
 const filterList = [
   "all",
   "mine",
@@ -7,8 +9,13 @@ const filterList = [
   "sales",
 ];
 
-export default function ProjectFilter({ currentFilter, changeFilter }) {
-  const handleClick = (newFilter) => {
+interface Props {
+  currentFilter: string;
+  changeFilter: (newFilter: string) => void;
+}
+
+export default function ProjectFilter({ currentFilter, changeFilter }: Props) {
+  const handleClick = (newFilter: string) => {
     changeFilter(newFilter);
   };
 

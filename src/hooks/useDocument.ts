@@ -13,6 +13,7 @@ export const useDocument = (collection: string, id: string) => {
     const unsubscribe = ref.onSnapshot(
       (snapshot) => {
         if (snapshot.data()) {
+          //@ts-ignore
           setDocument({ ...snapshot.data(), id: snapshot.id });
           setError("");
         } else {
