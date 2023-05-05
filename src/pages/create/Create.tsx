@@ -5,10 +5,8 @@ import { timestamp } from "../../firebase/config";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useHistory } from "react-router-dom";
-
-// styles
-import "./Create.css";
 import { User } from "../../types/types";
+import styled from "@emotion/styled";
 
 type CategoryOption = {
   value: string;
@@ -100,7 +98,7 @@ export default function Create() {
   };
 
   return (
-    <div className="create-form">
+    <CreateForm>
       <h2 className="page-title">Create a new Project</h2>
       <form onSubmit={handleSubmit}>
         <label>
@@ -150,6 +148,10 @@ export default function Create() {
         <button className="btn">Add Project</button>
         {formError && <p className="error">{formError}</p>}
       </form>
-    </div>
+    </CreateForm>
   );
 }
+
+const CreateForm = styled.div`
+  max-width: 600px;
+`;

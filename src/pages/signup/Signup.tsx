@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useSignup } from "../../hooks/useSignup";
-
-// styles
-import "./Signup.css";
+import styled from "@emotion/styled";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -44,7 +42,7 @@ export default function Signup() {
   };
 
   return (
-    <form className="auth-form" onSubmit={handleSubmit}>
+    <AuthForm onSubmit={handleSubmit}>
       <h2>Sign up</h2>
       <label>
         <span>email:</span>
@@ -85,6 +83,15 @@ export default function Signup() {
         </button>
       )}
       {error && <div className="error">{error}</div>}
-    </form>
+    </AuthForm>
   );
 }
+
+const AuthForm = styled.form`
+  max-width: 360px;
+  margin: 60px auto;
+  padding: 40px;
+  border: 1px solid #ddd;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.05);
+  background: #fff;
+`;

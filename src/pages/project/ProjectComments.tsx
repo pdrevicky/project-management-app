@@ -6,6 +6,7 @@ import { useFirestore } from "../../hooks/useFirestore";
 import Avatar from "../../components/Avatar";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { Project } from "../../types/types";
+import styled from "@emotion/styled";
 
 interface Props {
   project: Project;
@@ -37,27 +38,27 @@ export default function ProjectComments({ project }: Props) {
   };
 
   return (
-    <div className="project-comments">
+    <ProjectCommentsContainer>
       <h4>Project Comments</h4>
 
       <ul>
         {project.comments.length > 0 &&
           project.comments.map((comment) => (
             <li key={comment.id}>
-              <div className="comment-author">
+              <CommentAuthor>
                 <Avatar src={comment.photoURL!} />
                 <p>{comment.displayName}</p>
-              </div>
-              <div className="comment-date">
+              </CommentAuthor>
+              <CommentDate>
                 <p>
                   {formatDistanceToNow(comment.createdAt.toDate(), {
                     addSuffix: true,
                   })}
                 </p>
-              </div>
-              <div className="comment-content">
+              </CommentDate>
+              <CommentContent>
                 <p>{comment.content}</p>
-              </div>
+              </CommentContent>
             </li>
           ))}
       </ul>
@@ -73,6 +74,48 @@ export default function ProjectComments({ project }: Props) {
         </label>
         <button className="btn">Add Comment</button>
       </form>
-    </div>
+    </ProjectCommentsContainer>
   );
 }
+
+const ProjectCommentsContainer = styled.div`
+  label {
+    margin-bottom: 0px;
+  }
+  textarea {
+    min-height: 40px;
+    font-size: 1.5em;
+  }
+
+  h4 {
+    color: var(--heading-color);
+  }
+  li {
+    padding: 16px;
+    border-radius: 4px;
+    border: 1px solid #f2f2f2;
+    margin-top: 20px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.05);
+    background: #fff;
+  }
+`;
+
+const CommentAuthor = styled.div`
+  display: flex;
+  align-items: center;
+  color: var(--title-color);
+  .avatar {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+`;
+const CommentDate = styled.div`
+  color: var(--text-color);
+  font-size: 0.9em;
+  margin: 4px 0 10px;
+`;
+const CommentContent = styled.div`
+  color: var(--text-color);
+  font-size: 0.9em;
+`;

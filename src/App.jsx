@@ -1,8 +1,6 @@
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
-
-// styles
-import "./App.css";
+import styled from "@emotion/styled";
 
 // pages and components
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -18,11 +16,11 @@ function App() {
   const { user, authIsReady } = useAuthContext();
 
   return (
-    <div className="App">
+    <AppContainer>
       {authIsReady && (
         <BrowserRouter>
           {user && <Sidebar />}
-          <div className="container">
+          <Container>
             <Navbar />
             {/* Switch surrounds the Rutes so only one Route component can be show at a time */}
             <Switch>
@@ -48,12 +46,21 @@ function App() {
                 {!user && <Signup />}
               </Route>
             </Switch>
-          </div>
+          </Container>
           {user && <OnlineUsers />}
         </BrowserRouter>
       )}
-    </div>
+    </AppContainer>
   );
 }
 
 export default App;
+
+const AppContainer = styled.div`
+  display: flex;
+`;
+
+const Container = styled.div`
+  flex-grow: 1;
+  padding: 0 60px;
+`;

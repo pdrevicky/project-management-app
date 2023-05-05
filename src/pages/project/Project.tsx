@@ -1,11 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useDocument } from "../../hooks/useDocument";
 import React from "react";
-
-// styles
-import "./Project.css";
 import ProjectSummary from "./ProjectSummary";
 import ProjectComments from "./ProjectComments";
+import styled from "@emotion/styled";
 
 export default function Project() {
   const { id } = useParams<{ id: string }>();
@@ -19,9 +17,16 @@ export default function Project() {
   }
 
   return (
-    <div className="project-details">
+    <ProjectDedails>
       <ProjectSummary project={document} />
       <ProjectComments project={document} />
-    </div>
+    </ProjectDedails>
   );
 }
+
+const ProjectDedails = styled.div`
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  align-items: start;
+  grid-gap: 60px;
+`;

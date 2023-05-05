@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useCollection } from "../../hooks/useCollection";
 import { useAuthContext } from "../../hooks/useAuthContext";
-
-// styles
-import "./Dashboard.css";
 import ProjectList from "../../components/ProjectList";
 import ProjectFilter from "./ProjectFilter";
 import { Project } from "../../types/types";
